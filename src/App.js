@@ -40,13 +40,13 @@ class App extends Component {
           <button onClick={() => this.hideComponent("showHideGraph")}>
             Click to toggle Graph component
           </button>
-          <button onClick={() => this.hideComponent("showHideList")}>
+          {/*<button onClick={() => this.hideComponent("showHideList")}>
             Click to toggle List component
-          </button>
+          </button>*/}
         </div>
         {showHideGraph && <DynamicChart />}
 
-        {showHideList && <DataList />}
+        {/*showHideList && <DataList />*/}
 
       </div>
     );
