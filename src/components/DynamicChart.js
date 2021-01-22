@@ -139,7 +139,6 @@ class DynamicChart extends Component {
     },
 
     xAxis: {
-        type: 'datetime',
         tickPixelInterval: 150
      },
      yAxis: [{
