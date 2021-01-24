@@ -43,12 +43,6 @@ class DynamicChart extends Component {
   afterChartCreated(highcharts) {
     this.internalChart = highcharts;
 
-              //   var series = this.internalChart.series;
-              //     setInterval(function () {
-              //     var x = (new Date()).getTime(), // current time
-              //         y = Math.round(Math.random() * 100);
-              //     series[0].addPoint([x, y], true, true);
-              // }, 1000);
 
       this.ws.onmessage = evt => {
         // on receiving a message, set the state with the client data
@@ -82,12 +76,9 @@ class DynamicChart extends Component {
 
   processMessage(data, series) {
 
-                  var x = (new Date(data.timestamp)).getTime(), // current time
-                  //     y = Math.round(Math.random() * 100);
-                  // var x = data.timestamp, // current time
-                      y = data.price,
-                      z = data.size;
-                  // series[0].addPoint([x, y], true, false);
+    var x = (new Date(data.timestamp)).getTime(), // current time
+    y = data.price,
+    z = data.size;
 
     if(data.side === "Buy") {
       series[0].addPoint([x, y], true, false);
@@ -95,26 +86,13 @@ class DynamicChart extends Component {
     else if(data.side === "Sell") {
       series[1].addPoint([x, y], true, false);
     }
-    series[2].addPoint([x, z], true, false);
-
+    if(data.side === "Buy" || data.side === "Sell") {
+      series[2].addPoint([x, z], true, false);
+    }
   }
 
    options = {
     chart: {
-        // type: 'spline',
-        // events: {
-        //   load: function () {
-
-        //       // set up the updating of the chart each second
-        //       var series = this.series[0];
-        //       setInterval(function () {
-        //           var x = (new Date()).getTime(), // current time
-        //               y = Math.round(Math.random() * 100);
-        //           series.addPoint([x, y], true, true);
-        //       }, 1000);
-        //   }
-      // }
-
     },
 
     time: {
@@ -139,7 +117,7 @@ class DynamicChart extends Component {
     },
 
     xAxis: {
-        tickPixelInterval: 150
+        // tickPixelInterval: 150
      },
      yAxis: [{
         title: {
@@ -151,8 +129,19 @@ class DynamicChart extends Component {
            color: '#808080'
         }]
      },{
-        	opposite: false
+        	opposite: true
         }],
+            tooltip: {
+      enabled: true
+    },
+    plotOptions: {
+      series: {
+        allowPointSelect: true,
+        marker: {
+          enabled: true
+        }
+      }
+    },
 
     title: {
         text: 'Live random data'
@@ -162,15 +151,16 @@ class DynamicChart extends Component {
         enabled: false
     },
 
-    // series: []
     series: [{
         name: "Buy",
+        type: "line",
         data: [null],
         yAxis: 0
     },
     {
         
         name: "Sell",
+        type: "line",
         data: [null],
         yAxis: 0
     }
@@ -178,6 +168,7 @@ class DynamicChart extends Component {
     {
         
         name: "Size",
+        type: "column",
         data: [null],
         yAxis: 1
     }
